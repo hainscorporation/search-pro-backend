@@ -3,14 +3,14 @@
  * @author Daniela Cordoba
  */
 
-import { connectToDatabase } from "./mongoconnection";
+import { connectToDatabase } from "./mongoconnection.js";
 import { ObjectId } from "mongodb";
 
 async function getOrders() {
   try {
     const db = await connectToDatabase();
     const collection = db.collection('orders');
-    const orders = await collection.find().toArray();
+    const orders = await collection.find({}).toArray();
 
     return orders;
   } catch (error) {

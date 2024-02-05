@@ -1,6 +1,9 @@
 import express from "express";
 import cors from "cors";
 import dotenv from 'dotenv';
+import bodyParser from 'body-parser';
+import router from "./routes/routes.js";
+
 import { MongoClient } from "mongodb";
 import { faker } from "@faker-js/faker";
 
@@ -17,6 +20,23 @@ const client = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
+
+async function run() {
+  try {
+    // Connect the client to the server
+    await client.connect();
+    // Establish and verify connection
+    await client.db("admin").command({
+      ping: 1
+    });
+    console.log("Connected successfully to server");
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+}
+// run().catch(console.dir);
+
 
 // SEEDER
 function randomIntFromInterval(min, max) { // min and max included 
@@ -92,23 +112,6 @@ async function seedDB() {
 
 // seedDB();
 
-async function run() {
-  try {
-    // Connect the client to the server
-    await client.connect();
-    // Establish and verify connection
-    await client.db("admin").command({
-      ping: 1
-    });
-    console.log("Connected successfully to server");
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
-  }
-}
-
-// run().catch(console.dir);
-
 // CORS
 let corsOptions = {
   origin: ['http://localhost:3000'],
@@ -116,8 +119,10 @@ let corsOptions = {
 
 app.use(cors(corsOptions));
 
-
 // Middleware
+app.use(bodyParser.json());
+
+app.use('/', router);
 
 app.get('/', (req, res) => {
   res.send('Welcome to my server!');

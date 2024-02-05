@@ -9,7 +9,7 @@ import { Status_Codes } from '../utils/constants.js';
 
 let getOrdersService = async(req, res) => {
   try {
-    const orders = getOrders();
+    const orders = await getOrders();
 
     return success(res, Status_Codes.Ok, orders);
 

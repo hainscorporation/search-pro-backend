@@ -4,7 +4,7 @@
  */
 
 import express from "express";
-import { getOrdersService, getOrderbyIdService } from "../services/orders.service";
+import { getOrdersService, getOrderbyIdService } from "../services/orders.service.js";
 
 const router = express.Router();
 
