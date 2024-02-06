@@ -33,4 +33,28 @@ async function getOrderById(orderId) {
   }
 }
 
-export { getOrders, getOrderById }
+async function setOrders(orders) {
+	try {
+		const db = await connectToDatabase();
+		const collection = db.collection('orders');
+		await collection.insertMany(orders);
+	}
+	catch (error) {
+		console.error(error);
+		throw error;
+	}
+}
+
+async function dropOrdersCollection(orders) {
+	try {
+		const db = await connectToDatabase();
+		const collection = db.collection('orders');
+		await collection.drop();
+	}
+	catch (error) {
+		console.error(error);
+		throw error;
+	}
+}
+
+export { getOrders, getOrderById, setOrders, dropOrdersCollection}
