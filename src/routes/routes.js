@@ -4,7 +4,7 @@
  */
 
 import express from "express";
-import { getOrdersService, getOrderbyIdService } from "../services/orders.service.js";
+import { getOrdersService, getOrderbyIdService, updateOrderedDateService, updateResultsSentDateService } from "../services/orders.service.js";
 import { seedDB } from "../services/faker.service.js";
 
 const router = express.Router();
@@ -18,6 +18,16 @@ router.get('/orders/:orderId', getOrderbyIdService)
  * Endpoint Get all orders
  */
 router.get('/orders', getOrdersService)
+
+/**
+ * Endpoint Update ordered date
+ */
+router.patch('/orders/:orderId', updateOrderedDateService)
+
+/**
+ * Endpoint Update results sent date
+ */
+router.patch('/orders/:orderId', updateResultsSentDateService)
 
 /**
  * Endpoint seed database

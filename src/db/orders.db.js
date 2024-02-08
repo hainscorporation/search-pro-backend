@@ -45,7 +45,21 @@ async function setOrders(orders) {
 	}
 }
 
-async function dropOrdersCollection(orders) {
+async function updateOrder(orderId, body) {
+  try {
+    const db = await connectToDatabase();
+    const collection = db.collection('orders');
+    await collection.updateOne(
+      { _id: new ObjectId(orderId) },
+      ...body
+    )
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+async function dropOrdersCollection() {
 	try {
 		const db = await connectToDatabase();
 		const collection = db.collection('orders');
@@ -57,4 +71,4 @@ async function dropOrdersCollection(orders) {
 	}
 }
 
-export { getOrders, getOrderById, setOrders, dropOrdersCollection}
+export { getOrders, getOrderById, setOrders, updateOrder, dropOrdersCollection}
