@@ -51,7 +51,7 @@ async function updateOrder(orderId, body) {
     const collection = db.collection('orders');
     await collection.updateOne(
       { _id: new ObjectId(orderId) },
-      ...body
+      body
     )
   } catch (error) {
     console.error(error);

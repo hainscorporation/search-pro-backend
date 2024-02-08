@@ -34,12 +34,11 @@ let getOrderbyIdService = async(req, res) => {
   }
 }
 
-let updateOrderedDateService = async(req, res) => {
+let updateOrderField = async(req, res) => {
   try {
     const orderId = req.params.orderId;
-    const newOrderedDate = req.body.ordered;
 
-    const body = { $set: { ordered: newOrderedDate } }
+    const body = { $set: req.body }
     await updateOrder(orderId, body);
 
     return success(res, Status_Codes.Ok);
@@ -51,21 +50,4 @@ let updateOrderedDateService = async(req, res) => {
   }
 }
 
-let updateResultsSentDateService = async(req, res) => {
-  try {
-    const orderId = req.params.orderId;
-    const newResultSentDate = req.body.resultSent;
-
-    const body = { $set: { resultSent: newResultSentDate } }
-    await updateOrder(orderId, body);
-
-    return success(res, Status_Codes.Ok);
-
-  } catch (err) {
-    console.log(err);
-
-    return error(res, Status_Codes.BadRequest, err);
-  }
-}
-
-export { getOrdersService, getOrderbyIdService, updateOrderedDateService, updateResultsSentDateService }
+export { getOrdersService, getOrderbyIdService, updateOrderField }
