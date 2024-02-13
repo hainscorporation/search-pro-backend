@@ -4,15 +4,27 @@
  */
 
 import { error, success} from '../utils/response.js';
-import { getOrders, getOrderById, updateOrder } from '../db/orders.db.js';
+import { getAllOrders, getFilteredOrders, getOrderById, getOrdersByReference, updateOrder } from '../db/orders.db.js';
 import { Status_Codes } from '../utils/constants.js';
 
-let getOrdersService = async(req, res) => {
+let getAllOrdersService = async(req, res) => {
   try {
-    const orders = await getOrders();
+    const orders = await getAllOrders();
 
     return success(res, Status_Codes.Ok, orders);
 
+  } catch (err) {
+    console.log(err);
+
+    return error(res, Status_Codes.BadRequest, err);
+  }
+}
+
+let getFilteredOrdersService = async(req, res) => {
+  try {
+    const filteredOrders = await getFilteredOrders();
+
+    return success(res, Status_Codes.Ok, filteredOrders);
   } catch (err) {
     console.log(err);
 
@@ -28,6 +40,18 @@ let getOrderbyIdService = async(req, res) => {
     return success(res, Status_Codes.Ok, order);
 
   } catch(err) {
+    console.log(err);
+    
+    return error(res, Status_Codes.BadRequest, err);
+  }
+}
+
+let getOrdersByReferenceService = async(req, res) => {
+  try {
+    const filteredOrders = await getOrdersByReference(req.body.searchTerm);
+
+    return success(res, Status_Codes.Ok, filteredOrders);
+  } catch (err) {
     console.log(err);
     
     return error(res, Status_Codes.BadRequest, err);
@@ -50,4 +74,9 @@ let updateOrderField = async(req, res) => {
   }
 }
 
-export { getOrdersService, getOrderbyIdService, updateOrderField }
+export { 
+  getAllOrdersService,
+  getFilteredOrdersService,
+  getOrderbyIdService,
+  getOrdersByReferenceService,
+  updateOrderField }

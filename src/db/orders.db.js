@@ -6,7 +6,7 @@
 import { connectToDatabase } from "./mongoconnection.js";
 import { ObjectId } from "mongodb";
 
-async function getOrders() {
+async function getAllOrders() {
   try {
     const db = await connectToDatabase();
     const collection = db.collection('orders');
@@ -19,12 +19,30 @@ async function getOrders() {
   }
 }
 
+async function getFilteredOrders() {
+  try {
+    const db = await connectToDatabase();
+    const collection = db.collection('orders');
+    const filteredOrders = await collection.find({
+      'ordered': {
+        '$exists': false
+      }
+    }
+    ).toArray();
+
+    return filteredOrders;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
 async function getOrderById(orderId) {
   try {
     const db = await connectToDatabase();
     const collection = db.collection('orders');
 
-    const order = await collection.findOne({ _id: new ObjectId(orderId) }); 
+    const order = await collection.findOne({ _id: new ObjectId(orderId) });
 
     return order;
   } catch (error) {
@@ -33,16 +51,29 @@ async function getOrderById(orderId) {
   }
 }
 
+async function getOrdersByReference(searchTerm) {
+  try {
+    const db = await connectToDatabase();
+    const collection = db.collection('orders');
+
+    const filteredOrders = await collection.find({ "reference": searchTerm }).toArray();
+    return filteredOrders;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
 async function setOrders(orders) {
-	try {
-		const db = await connectToDatabase();
-		const collection = db.collection('orders');
-		await collection.insertMany(orders);
-	}
-	catch (error) {
-		console.error(error);
-		throw error;
-	}
+  try {
+    const db = await connectToDatabase();
+    const collection = db.collection('orders');
+    await collection.insertMany(orders);
+  }
+  catch (error) {
+    console.error(error);
+    throw error;
+  }
 }
 
 async function updateOrder(orderId, body) {
@@ -60,15 +91,23 @@ async function updateOrder(orderId, body) {
 }
 
 async function dropOrdersCollection() {
-	try {
-		const db = await connectToDatabase();
-		const collection = db.collection('orders');
-		await collection.drop();
-	}
-	catch (error) {
-		console.error(error);
-		throw error;
-	}
+  try {
+    const db = await connectToDatabase();
+    const collection = db.collection('orders');
+    await collection.drop();
+  }
+  catch (error) {
+    console.error(error);
+    throw error;
+  }
 }
 
-export { getOrders, getOrderById, setOrders, updateOrder, dropOrdersCollection}
+export { 
+  getAllOrders, 
+  getFilteredOrders, 
+  getOrderById, 
+  getOrdersByReference, 
+  setOrders, 
+  updateOrder, 
+  dropOrdersCollection 
+}
