@@ -4,27 +4,27 @@
  */
 
 import { faker } from "@faker-js/faker";
-import { error, success} from '../utils/response.js';
+import { error, success } from '../utils/response.js';
 import { setOrders, dropOrdersCollection } from '../db/orders.db.js';
 import { Status_Codes } from '../utils/constants.js';
 
 // SEEDER
 function randomIntFromInterval(min, max) { // min and max included 
     return Math.floor(Math.random() * (max - min + 1) + min);
-  }
-  
-let seedDB = async(req, res) => {
+}
+
+let seedDB = async (req, res) => {
     try {
         dropOrdersCollection();
         // make a bunch of time series data
         let timeSeriesData = [];
-  
+
         for (let i = 0; i < 100; i++) {
             let newOrder = {
                 searchName: faker.lorem.lines(1),
                 requested: faker.date.past(),
-                ordered: faker.date.anytime(),
-                resultSent: faker.date.anytime(),
+                /* ordered: faker.date.anytime(),
+                resultSent: faker.date.anytime(), */
                 ref: faker.string.alphanumeric({
                     length: 7,
                     casing: 'upper'
@@ -33,19 +33,11 @@ let seedDB = async(req, res) => {
                 sellers: [],
                 propertyAddress: faker.location.streetAddress(),
                 council: faker.location.state(),
-                lot: faker.number.int({
-                    min: 1,
-                    max: 99
-                }),
-                plan: faker.number.int({
-                    min: 100,
-                    max: 9999
-                }),
-                planType: faker.string.alpha(2),
                 price: faker.commerce.price({
                     min: 100000,
                     max: 3000000,
                 }),
+                lotonplan: `${faker.number.int({min: 1,max: 99})}${faker.string.alpha({count: 2, case: 'upper'})}${faker.number.int({min: 100,max: 9999})}`,
                 requestedBy: faker.company.name()
             };
   
