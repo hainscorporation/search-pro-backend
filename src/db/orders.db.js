@@ -56,7 +56,7 @@ async function getOrdersByReference(searchTerm) {
     const db = await connectToDatabase();
     const collection = db.collection('orders');
 
-    const filteredOrders = await collection.find({ "reference": searchTerm }).toArray();
+    const filteredOrders = await collection.find({ "ref": searchTerm }).toArray();
     return filteredOrders;
   } catch (error) {
     console.error(error);
