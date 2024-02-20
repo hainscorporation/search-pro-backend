@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import helmet from "helmet";
+import axios from "axios";
 
 import router from "./routes/routes.js";
 
@@ -10,7 +11,6 @@ dotenv.config()
 
 const app = express();
 const port = 8000;
-
 
 // CORS
 const corsOptions = {
@@ -31,6 +31,38 @@ app.use('/', router);
 /* app.get('/', (req, res) => {
   res.send('Welcome to my server!');
 }); */
+
+app.post('/validate-lot-plan', async (req, res) => {
+  try {
+    const username = process.env.PSL_PLUS_USERNAME;
+    const password = process.env.PSL_PLUS_PASSWORD;
+    const credentials = Buffer.from(`${username}:${password}`).toString('base64');
+    
+    const body = {
+      ValidateLotPlan: {
+        usernameOrEmail: username,
+        LotNumber: req.body.lot,
+        PlanNumber: req.body.plan
+      }
+    }
+
+    const response = await axios.post(
+      'https://information.qld.gov.au/service/Addressing/ValidationService/PLSplusPublic/rest/ValidateLotPlan', 
+      body, 
+      {
+        headers: {
+          'accept': 'application/json',
+          'Authorization': `Basic ${credentials}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+    res.json(response.data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error processing the request.');
+  }
+});
 
 app.use(function (err, req, res, next) {
   console.error(err.stack)
