@@ -51,12 +51,41 @@ async function getOrderById(orderId) {
   }
 }
 
-async function getOrdersByReference(searchTerm) {
+async function getOrdersBySearchTerm(searchTerm) {
   try {
     const db = await connectToDatabase();
     const collection = db.collection('orders');
+    const agg = [
+      {
+        '$search': {
+          'index': 'partial_search',
+          'compound': {
+            'should': [
+              {
+                'autocomplete': {
+                  'path': 'ref', 
+                  'query': searchTerm
+                }
+              },
+              {
+                'autocomplete': {
+                  'path': 'requestedBy', 
+                  'query': searchTerm
+                }
+              },
+              {
+                'autocomplete': {
+                  'path': 'lotonplan', 
+                  'query': searchTerm
+                }
+              }
+            ]
+          }
+        }
+      }
+    ];
 
-    const filteredOrders = await collection.find({ "ref": searchTerm }).toArray();
+    const filteredOrders = await collection.aggregate(agg).toArray();
     return filteredOrders;
   } catch (error) {
     console.error(error);
@@ -102,12 +131,12 @@ async function dropOrdersCollection() {
   }
 }
 
-export { 
-  getAllOrders, 
-  getFilteredOrders, 
-  getOrderById, 
-  getOrdersByReference, 
-  setOrders, 
-  updateOrder, 
-  dropOrdersCollection 
+export {
+  getAllOrders,
+  getFilteredOrders,
+  getOrderById,
+  getOrdersBySearchTerm,
+  setOrders,
+  updateOrder,
+  dropOrdersCollection
 }

@@ -4,7 +4,7 @@
  */
 
 import express from "express";
-import { getAllOrdersService, getFilteredOrdersService, getOrderbyIdService, getOrdersByReferenceService, updateOrderField } from "../services/orders.service.js";
+import { getAllOrdersService, getFilteredOrdersService, getOrderbyIdService, getOrdersBySearchTermService, updateOrderField } from "../services/orders.service.js";
 import { seedDB } from "../services/faker.service.js";
 
 const router = express.Router();
@@ -27,7 +27,7 @@ router.get('/filtered-orders', getFilteredOrdersService)
 /**
  * Endpoint Get filtered orders filtered by reference
  */
-router.post('/orders-by-reference', getOrdersByReferenceService)
+router.post('/orders-by-reference', getOrdersBySearchTermService)
 
 /**
  * Endpoint Update order field
