@@ -38,7 +38,8 @@ let seedDB = async (req, res) => {
                     max: 3000000,
                 }),
                 lotonplan: `${faker.number.int({min: 1,max: 99})}${faker.string.alpha({count: 2, case: 'upper'})}${faker.number.int({min: 100,max: 9999})}`,
-                requestedBy: faker.company.name()
+                requestedBy: faker.company.name(),
+                status: 0
             };
   
             for (let j = 0; j < randomIntFromInterval(1, 6); j++) {
