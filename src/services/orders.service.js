@@ -4,7 +4,7 @@
  */
 
 import { error, success} from '../utils/response.js';
-import { getAllOrders, getFilteredOrders, getOrderById, getOrdersBySearchTerm, updateOrder } from '../db/orders.db.js';
+import { getAllOrders, getFilteredOrders, getOrderById, getOrdersbyStatus, getOrdersBySearchTerm, updateOrder } from '../db/orders.db.js';
 import { Status_Codes } from '../utils/constants.js';
 
 let getAllOrdersService = async(req, res) => {
@@ -46,6 +46,18 @@ let getOrderbyIdService = async(req, res) => {
   }
 }
 
+let getOrdersByStatusService = async(req, res) => {
+  try {
+    const filteredOrders = await getOrdersbyStatus(req.body.selectedStatus);
+
+    return success(res, Status_Codes.Ok, filteredOrders);
+  } catch (err) {
+    console.log(err);
+    
+    return error(res, Status_Codes.BadRequest, err);
+  }
+}
+
 let getOrdersBySearchTermService = async(req, res) => {
   try {
     const filteredOrders = await getOrdersBySearchTerm(req.body.searchTerm);
@@ -78,5 +90,6 @@ export {
   getAllOrdersService,
   getFilteredOrdersService,
   getOrderbyIdService,
+  getOrdersByStatusService,
   getOrdersBySearchTermService,
   updateOrderField }

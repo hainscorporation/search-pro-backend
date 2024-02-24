@@ -4,7 +4,7 @@
  */
 
 import express from "express";
-import { getAllOrdersService, getFilteredOrdersService, getOrderbyIdService, getOrdersBySearchTermService, updateOrderField } from "../services/orders.service.js";
+import { getAllOrdersService, getFilteredOrdersService, getOrderbyIdService, getOrdersByStatusService, getOrdersBySearchTermService, updateOrderField } from "../services/orders.service.js";
 import { seedDB } from "../services/faker.service.js";
 
 const router = express.Router();
@@ -23,6 +23,11 @@ router.get('/orders', getAllOrdersService)
  * Endpoint Get filtered orders (no ordered date)
  */
 router.get('/filtered-orders', getFilteredOrdersService)
+
+/**
+ * Endpoint Get order by status
+ */
+router.post('/orders-by-status', getOrdersByStatusService)
 
 /**
  * Endpoint Get filtered orders filtered by reference

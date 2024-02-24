@@ -51,6 +51,20 @@ async function getOrderById(orderId) {
   }
 }
 
+async function getOrdersbyStatus(filteredStatus) {
+  try {
+    const db = await connectToDatabase();
+    const collection = db.collection('orders');
+
+    const orders = await collection.find({ "status": {"$in": filteredStatus }}).toArray();
+
+    return orders;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
 async function getOrdersBySearchTerm(searchTerm) {
   try {
     const db = await connectToDatabase();
@@ -135,6 +149,7 @@ export {
   getAllOrders,
   getFilteredOrders,
   getOrderById,
+  getOrdersbyStatus,
   getOrdersBySearchTerm,
   setOrders,
   updateOrder,
