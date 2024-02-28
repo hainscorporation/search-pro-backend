@@ -6,11 +6,23 @@
 import { faker } from "@faker-js/faker";
 import { error, success } from '../utils/response.js';
 import { setOrders, dropOrdersCollection } from '../db/orders.db.js';
-import { Status_Codes } from '../utils/constants.js';
+import { setCouncils } from "../db/councils.db.js";
+import { Status_Codes, Councils } from '../utils/constants.js';
 
 // SEEDER
 function randomIntFromInterval(min, max) { // min and max included 
     return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+let insertCouncils = async (req, res) => {
+    try {
+        await setCouncils(Councils);
+        console.log("Councils added");
+        return success(res, Status_Codes.Ok, 'Councils added');
+    } catch (error) {
+        console.log(err);
+        return error(res, Status_Codes.BadRequest, err);
+    }
 }
 
 let seedDB = async (req, res) => {
@@ -65,4 +77,4 @@ let seedDB = async (req, res) => {
     } 
 }
 
-export { seedDB }
+export { insertCouncils, seedDB }

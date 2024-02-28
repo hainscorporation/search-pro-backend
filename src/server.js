@@ -57,7 +57,14 @@ app.post('/validate-lot-plan', async (req, res) => {
         }
       }
     );
-    res.json(response.data);
+
+    const shapedResponse = {
+      council: response.data.ValidateLotPlanResponse.ValidateLotPlanResult.Results.Result.LocalGovernmentArea,
+      address: response.data.ValidateLotPlanResponse.ValidateLotPlanResult.Results.Result.MetaData[1],
+      parcel: response.data.ValidateLotPlanResponse.ValidateLotPlanResult.Results.Result.Parcel
+    }
+    
+    res.json(shapedResponse);
   } catch (error) {
     console.error(error);
     res.status(500).send('Error processing the request.');

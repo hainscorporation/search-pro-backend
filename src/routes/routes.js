@@ -5,7 +5,8 @@
 
 import express from "express";
 import { getAllOrdersService, getFilteredOrdersService, getOrderbyIdService, getOrdersByStatusService, getOrdersBySearchTermService, updateOrderField } from "../services/orders.service.js";
-import { seedDB } from "../services/faker.service.js";
+import { seedDB, insertCouncils } from "../services/faker.service.js";
+import { getSearchesByCouncilService } from "../services/searches.service.js";
 
 const router = express.Router();
 
@@ -40,9 +41,19 @@ router.post('/orders-by-reference', getOrdersBySearchTermService)
 router.patch('/orders/:orderId', updateOrderField)
 
 /**
- * Endpoint seed database
+ * Endpoint seed orders
  */
 router.get('/seed', seedDB)
+
+/**
+ * Endpoint seed councils
+ */
+router.get('/seed-councils', insertCouncils)
+
+/**
+ * Endpoint Get Available searches for a given council
+ */
+router.post('/available-searches', getSearchesByCouncilService)
 
 
 export default router;

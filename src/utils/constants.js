@@ -14,6 +14,19 @@ const Status_Codes = {
   InternalServer: 500
 }
 
+const Councils = [
+  {
+    name: 'Brisbane City Council'
+  },
+  {
+    name: 'Gold Coast City Council'
+  },
+  {
+    name: 'Redlands City Council'
+  }
+]
+
 export {
-  Status_Codes
+  Status_Codes, 
+  Councils
 }
