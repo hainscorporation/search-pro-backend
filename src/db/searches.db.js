@@ -13,12 +13,12 @@ async function getSearchesByCouncil(councilId) {
     const query = { 
       "details": { 
         "$elemMatch": { 
-          "council": councilId 
+          "council": councilId.toString()
         } 
       } 
     };
 
-    const availableSearches = collection.find(query).toArray();
+    const availableSearches = await collection.find(query).toArray();
     return availableSearches;
   }
   catch (error) {

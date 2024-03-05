@@ -17,4 +17,17 @@ async function setCouncils(councils) {
   }
 }
 
-export { setCouncils }
+async function getCouncilByCode(councilCode) {
+  try {
+    const db = await connectToDatabase();
+    const collection = db.collection('councils');
+    const council = await collection.findOne({ code: councilCode });
+
+    return council;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export { setCouncils, getCouncilByCode }
