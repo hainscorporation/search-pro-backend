@@ -28,9 +28,9 @@ app.use(helmet());
 
 app.use('/', router);
 
-/* app.get('/', (req, res) => {
+app.get('/', (req, res) => {
   res.send('Welcome to my server!');
-}); */
+});
 
 app.post('/validate-lot-plan', async (req, res) => {
   try {
