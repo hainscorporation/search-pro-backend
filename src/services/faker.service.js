@@ -3,7 +3,6 @@
  * @author Daniela Cordoba
  */
 
-import { faker } from "@faker-js/faker";
 import { error, success } from '../utils/response.js';
 import { setOrders, dropOrdersCollection } from '../db/orders.db.js';
 import { setCouncils } from "../db/councils.db.js";
@@ -26,7 +25,7 @@ let insertCouncils = async (req, res) => {
 }
 
 let seedDB = async (req, res) => {
-    try {
+/*     try {
         dropOrdersCollection();
         // make a bunch of time series data
         let timeSeriesData = [];
@@ -35,8 +34,8 @@ let seedDB = async (req, res) => {
             let newOrder = {
                 searchName: faker.lorem.lines(1),
                 requested: faker.date.past(),
-                /* ordered: faker.date.anytime(),
-                resultSent: faker.date.anytime(), */
+                ordered: faker.date.anytime(),
+                resultSent: faker.date.anytime(), 
                 ref: faker.string.alphanumeric({
                     length: 7,
                     casing: 'upper'
@@ -74,7 +73,7 @@ let seedDB = async (req, res) => {
     catch (err) {
         console.log(err);
         return error(res, Status_Codes.BadRequest, err);
-    } 
+    }  */
 }
 
 export { insertCouncils, seedDB }
