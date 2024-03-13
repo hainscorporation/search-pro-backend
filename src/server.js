@@ -15,7 +15,7 @@ const port = process.env.PORT || 3000;;
 // CORS
 const corsOptions = {
   exposedHeaders: ['X-Auth', 'X-Total-Pages','X-Current-Page', 'X-Total-Record', 'X-Page-Size', 'X-Next-Page','X-Prev-Page'],
-  origin: ['http://localhost:3000'],
+  origin: ['*'],
   methods: ['GET','HEAD','POST','PUT','PATCH','DELETE'],
   preflightContinue: false,
   optionsSuccessStatus: 204
