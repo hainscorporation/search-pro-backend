@@ -6,6 +6,61 @@
 import { connectToDatabase } from "./mongoconnection.js";
 import { ObjectId } from "mongodb";
 
+let getOrders = async ({ filters = {} } = {}) => {
+  try {
+    const db =  await connectToDatabase();
+    const collection = db.collection('orders');
+    let agg = [];
+    if ("search" in filters) {
+      let searchTerm = filters.search;
+      agg.push(
+        {
+          '$search': {
+            'index': 'partial_search',
+            'compound': {
+              'should': [
+                { 'autocomplete': { 'path': 'ref', 'query': searchTerm } },
+                { 'autocomplete': { 'path': 'requestedBy', 'query': searchTerm } },
+                { 'autocomplete': { 'path': 'lotonplan', 'query': searchTerm } }
+              ]
+            }
+          }
+        }
+      )
+    }
+    if ("ordered" in filters) {
+      agg.push(
+        {
+          '$match': {
+            'ordered' : {'$exists': true} 
+          }
+        }
+      )
+    }
+
+    if ("status" in filters) {
+      let status = filters.status
+      if (status !== []) {
+        agg.push(
+          { 
+            '$match': {
+              'status': {
+                '$in': status 
+              }
+            }
+          }
+        )
+      }
+    }
+
+    return await collection.aggregate(agg).toArray();
+  } 
+  catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
 async function getAllOrders() {
   try {
     const db = await connectToDatabase();
@@ -146,6 +201,7 @@ async function dropOrdersCollection() {
 }
 
 export {
+  getOrders,
   getAllOrders,
   getFilteredOrders,
   getOrderById,

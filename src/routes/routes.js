@@ -18,12 +18,12 @@ router.get('/orders/:orderId', getOrderbyIdService)
 /**
  * Endpoint Get all orders
  */
-router.get('/orders', getAllOrdersService)
+router.get('/all-orders', getAllOrdersService)
 
 /**
- * Endpoint Get filtered orders (no ordered date)
+ * Endpoint Get filtered orders 
  */
-router.get('/filtered-orders', getFilteredOrdersService)
+router.post('/orders', getFilteredOrdersService)
 
 /**
  * Endpoint Get order by status
