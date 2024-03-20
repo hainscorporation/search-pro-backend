@@ -14,15 +14,18 @@ const port = process.env.PORT || 8000;
 
 // CORS
 const corsOptions = {
-  exposedHeaders: ['X-Auth', 'X-Total-Pages','X-Current-Page', 'X-Total-Record', 'X-Page-Size', 'X-Next-Page','X-Prev-Page'],
-  origin: ['*'],
-  methods: ['GET','HEAD','POST','PUT','PATCH','DELETE'],
-  preflightContinue: false,
-  optionsSuccessStatus: 204
-}
+  origin: ['http://search-pro-frontend.s3-website-ap-southeast-2.amazonaws.com/']
+}    
+app.use(cors(corsOptions))
+app.use((req,res,next)=>{
+  res.setHeader('Access-Control-Allow-Origin','*');
+  res.setHeader('Access-Control-Allow-Methods','GET,POST,PUT,PATCH,DELETE');
+  res.setHeader('Access-Control-Allow-Methods','Content-Type','Authorization');
+  next(); 
+})
 
 // MIDDLEWARE
-app.use(cors(corsOptions));
+//app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(helmet());
 
