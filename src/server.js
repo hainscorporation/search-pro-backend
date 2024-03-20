@@ -15,7 +15,7 @@ const port = process.env.PORT || 8000;
 // CORS
 const corsOptions = {
   exposedHeaders: ['X-Auth', 'X-Total-Pages','X-Current-Page', 'X-Total-Record', 'X-Page-Size', 'X-Next-Page','X-Prev-Page'],
-  origin: ['*'],
+  origin: '*',
   methods: ['GET','HEAD','POST','PUT','PATCH','DELETE'],
   preflightContinue: false,
   optionsSuccessStatus: 204
